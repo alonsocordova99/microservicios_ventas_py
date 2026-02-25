@@ -1,7 +1,7 @@
 
---------------------------------------------
+-- ------------------------------------------
 -- INSERT CONFIGURACION
---------------------------------------------
+-- ------------------------------------------
 insert into configuracion (cod_prim, cod_sec, nombre, descripcion, valor_int, valor_dec, valor_str, estado) 
 values 
 (1, null, 'MONEDAS', 'Monedas soportadas', null, null, null,1),
