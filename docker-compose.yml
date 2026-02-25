@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=agrosechura
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - docker_mysql_php
+  
+  sistema_py:
+    build: ./system-fa-py
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./system-fa-py:/app
+    networks:
+      - docker_mysql_php
+    depends_on:
+      - mysql
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=123456
+      - DB_NAME=agrosechura
+      - DB_PORT=3306
+    restart: always
+
+  sistema-vue:
+    build: ./system-vue-front
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./system-vue-front:/app
+      - /app/node_modules
+    networks:
+      - docker_mysql_php
+    depends_on:
+      - sistema_py
+    restart: always
+
+volumes:
+  mysql-data:
+
+networks:
+  docker_mysql_php:
+    driver: bridge
+    
